@@ -1,0 +1,13 @@
+<ion-card>
+  <ion-card-header>
+    <ion-img [src]="article.urlToImage"></ion-img>
+
+    <ion-card-subtitle
+      ><span> {{ indice }} </span>
+      <span> {{ article.source.name }}</span>
+      <span> {{ article.publishedAt }}</span>
+    </ion-card-subtitle>
+    <ion-card-title> {{ article.title }}</ion-card-title>
+  </ion-card-header>
+  <ion-card-content> {{ article.content }} </ion-card-content>
+</ion-card>

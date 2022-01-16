@@ -1,0 +1,17 @@
+<ion-header [translucent]="true" mode="ios">
+  <ion-toolbar>
+    <ion-title>News for you...</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense" mode="ios">
+    <ion-toolbar>
+      <ion-title size="large">News for you...</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <app-list-news [articles]="articles"></app-list-news>
+  
+  <!--app-explore-container name="Tab 1 page"></app-explore-container-->
+</ion-content>
