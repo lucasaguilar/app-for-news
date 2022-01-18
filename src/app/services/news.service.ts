@@ -59,15 +59,11 @@ export class NewsService {
           apiKey,
           category: params.category,
           loadMore: params.loadMore,
-          page: params.page,
+          page: typeof params.page !== 'undefined' ? params.page : 1,
         },
       })
       .pipe(
         map((resp) => {
-          if (resp.articles.length === 0) {
-            return [];
-          }
-
           // para setear la pagina
           this.setFlagSessionByCategory(params);
 
@@ -79,13 +75,10 @@ export class NewsService {
             ])
           );
 
-          return [
-            ...this.getArticlesFromStorageByCategory(params),
-            ...resp.articles,
-          ];
+          return this.getArticlesFromStorageByCategory(params);
         }),
         tap((articles: Article[]) => {
-          console.log(articles);
+          // console.log(articles);
         })
       );
   }
@@ -97,16 +90,15 @@ export class NewsService {
 
     if (
       flagRemotosNewsByCategory !== null &&
-      localStorage.getItem('remotosNewsByCategory' + params.category)
+      localStorage.getItem('remotosNewsByCategory' + params.category) !== null
     ) {
       // category exists
+      params.page = Number(flagRemotosNewsByCategory) + 1;
       return true;
     } else {
       // add new category
-      params.page = 0;
+      params.page = 1;
       this.setFlagSessionByCategory(params);
-      params.page++;
-
       return false;
     }
   }
@@ -114,7 +106,7 @@ export class NewsService {
   private setFlagSessionByCategory(params: Parameters) {
     sessionStorage.setItem(
       'flagRemotosNewsByCategory' + params.category,
-      params.page.toString()
+      params.page ? params.page.toString() : '0'
     );
   }
 

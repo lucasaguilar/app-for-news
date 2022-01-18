@@ -13,4 +13,9 @@ export class NewsComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  openArticle() {
+    // this line only work in web browsers
+    window.open(this.article.url, '_blank');
+  }
 }

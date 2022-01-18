@@ -1,13 +1,30 @@
 <ion-card>
   <ion-card-header>
-    <ion-img [src]="article.urlToImage"></ion-img>
+    
+    
+    <ion-img (click)="openArticle()" [src]="article.urlToImage"></ion-img>
 
-    <ion-card-subtitle
-      ><span> {{ indice }} </span>
-      <span> {{ article.source.name }}</span>
-      <span> {{ article.publishedAt }}</span>
+    <ion-card-subtitle>
+      <ion-row class="ion-align-items-center">
+        <ion-col class="ion-margin">
+          <span> {{ indice }} </span>
+          <span> {{ article.source.name }}</span>
+          <span> {{ article.publishedAt }}</span>
+        </ion-col>
+
+
+        <ion-col align="right">
+          <ion-button (click)="onClick()" fill="clear">
+            <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+
+      </ion-row>
+
+      
     </ion-card-subtitle>
-    <ion-card-title> {{ article.title }}</ion-card-title>
+
+    <ion-card-title (click)="openArticle()" > {{ article.title }}</ion-card-title>
   </ion-card-header>
   <ion-card-content> {{ article.content }} </ion-card-content>
 </ion-card>

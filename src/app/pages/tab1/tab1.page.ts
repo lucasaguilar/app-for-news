@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Article, News, Parameters } from 'src/app/models';
 import { NewsService } from 'src/app/services/news.service';
 import { environment } from '../../../environments/environment';
@@ -8,16 +9,27 @@ import { environment } from '../../../environments/environment';
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
 })
-export class Tab1Page implements OnInit {
+export class Tab1Page implements OnInit, OnDestroy {
   public articles: Article[] = [];
+  private categoryDefault = 'business';
+  private suscription: Subscription;
 
   constructor(private newsService: NewsService) {}
 
+  ngOnDestroy(): void {
+    if (this.suscription) {
+      this.suscription.unsubscribe();
+    }
+  }
+
   ngOnInit(): void {
+
+
+    console.log('ngOnInit for tab1');
 
     const params: Parameters = {
       loadMore: false,
-      category: 'business'
+      category: this.categoryDefault,
     };
 
     this.newsService
@@ -36,5 +48,35 @@ export class Tab1Page implements OnInit {
         // or pushing
         this.articles = articles;
       });
+  }
+
+  getNews(params: Parameters = null, event: any = null) {
+    this.suscription = this.newsService
+      .getTopsHeadLinesByCategory(
+        environment.baseUrl,
+        environment.urlTopHeadLines,
+        environment.apiKeyForNotice,
+        params
+      )
+      .subscribe((articles: Article[]) => {
+        console.log(articles);
+        this.articles = articles;
+        if (event) {
+          setTimeout(() => {
+            event.target.complete();
+          }, 1000);
+        }
+      });
+  }
+
+  loadData(event: any) {
+    console.log(event);
+
+    const params: Parameters = {
+      category: this.categoryDefault,
+      loadMore: true,
+    };
+
+    this.getNews(params, event);
   }
 }
